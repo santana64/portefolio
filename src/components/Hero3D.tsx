@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useMemo, useEffect, useState, Suspense } from 'react';
+import { useRef, useMemo, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
 
 const REDUCED = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -16,8 +16,9 @@ function ThermalEnv() {
       if (!ctx) return;
       const g = ctx.createLinearGradient(0, 0, 0, 256);
       g.addColorStop(0.0, '#0B0D12');
-      g.addColorStop(0.55, '#161b22');
-      g.addColorStop(0.82, '#5a2f17');
+      g.addColorStop(0.45, '#222a35');
+      g.addColorStop(0.72, '#3a4656');
+      g.addColorStop(0.9, '#5a2f17');
       g.addColorStop(1.0, '#FF6B2C');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, 32, 256);
@@ -49,22 +50,20 @@ function ForgeObject() {
   return (
     <mesh ref={ref} geometry={geo} rotation={[0.4, 0.6, 0]}>
       <meshStandardMaterial
-        color="#222a33"
-        metalness={0.92}
-        roughness={0.26}
+        color="#46515f"
+        metalness={0.85}
+        roughness={0.34}
         flatShading
         emissive="#FF6B2C"
-        emissiveIntensity={0.1}
-        envMapIntensity={1.1}
+        emissiveIntensity={0.07}
+        envMapIntensity={1.8}
       />
     </mesh>
   );
 }
 
 export default function Hero3D() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null; // SSR-safe: WebGL only mounts on the client
+  // Loaded via client:only="react" — never SSR'd, so WebGL only runs on the client.
   return (
     <Canvas
       dpr={[1, 1.8]}
@@ -75,9 +74,9 @@ export default function Hero3D() {
     >
       <Suspense fallback={null}>
         <ThermalEnv />
-        <ambientLight intensity={0.45} color="#9fb3d0" />
-        <directionalLight position={[3, 4, 2]} intensity={2.2} color="#cfe0ff" />
-        <pointLight position={[-2.6, -2.2, 1.6]} intensity={7} distance={14} decay={1.6} color="#FF6B2C" />
+        <ambientLight intensity={1.1} color="#aebfd6" />
+        <directionalLight position={[3, 4, 2]} intensity={4.6} color="#e2edff" />
+        <pointLight position={[-2.6, -2.4, 1.8]} intensity={9} distance={16} decay={1.5} color="#FF6B2C" />
         <ForgeObject />
       </Suspense>
     </Canvas>
