@@ -8,9 +8,11 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = STR[lang];
 const ark = ARKORYN[lang];
-const base = import.meta.env.BASE_URL; // /portefolio/
-const homeFr = base;
-const homeEn = base + 'en';
+const base = import.meta.env.BASE_URL.replace(/\/$/, ''); // normalise -> /portefolio
+const homeFr = base + '/';     // /portefolio/
+const homeEn = base + '/en/';  // /portefolio/en/
+// Booking CTA: real Calendly when set, else a "request a call" email (never dead).
+const booking = SITE.calendly || `mailto:${SITE.email}?subject=${encodeURIComponent('Réserver un appel — Noah')}`;
 
 const selected = PROJECTS.filter((p) => p.selected);
 const cats = Array.from(new Set(PROJECTS.map((p) => p.cat)));
@@ -65,7 +67,7 @@ const titleHtml = lang === 'fr'
       </div>
       <div class="cta">
         <a href="#selected" class="btn btn-signal">{t.hero_cta1} ▸</a>
-        <a href={SITE.calendly} target="_blank" rel="noopener" class="btn">{t.hero_cta2}</a>
+        <a href={booking} target="_blank" rel="noopener" class="btn">{t.hero_cta2}</a>
       </div>
     </div>
     <div class="hero-stage">
@@ -247,7 +249,7 @@ const titleHtml = lang === 'fr'
         <p>{t.contact_p}</p>
         <p class="contact-meta">{t.contact_meta}</p>
         <div class="cta">
-          <a href={SITE.calendly} target="_blank" rel="noopener" class="btn btn-signal">{t.contact_cta1} ▸</a>
+          <a href={booking} target="_blank" rel="noopener" class="btn btn-signal">{t.contact_cta1} ▸</a>
           <a href={`mailto:${SITE.email}`} class="btn">{t.contact_cta2}</a>
         </div>
       </div>

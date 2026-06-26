@@ -4,7 +4,9 @@ export const SITE = {
   origin: 'https://santana64.github.io',
   base: '/portefolio',
   email: 'piesse917@gmail.com',
-  calendly: 'https://calendly.com/917',
+  // TODO(Noah): paste your real Calendly URL here (e.g. https://calendly.com/<your-handle>/<event>).
+  // While empty, booking CTAs fall back to a "request a call" email so no link is dead.
+  calendly: '',
   github: 'https://github.com/santana64',
   repoBase: 'https://github.com/santana64/',
   ogImage: '/portefolio/og.png',
