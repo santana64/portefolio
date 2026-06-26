@@ -1,0 +1,168 @@
+/* =============================================================================
+   DESIGN SYSTEM — "Machined Carbon + Forge Signal"
+   Industrial / dark, engineered to AVOID the generic "black + neon" AI default.
+
+   Thesis: cold forged metal (the base) meets one hot thermal signal (the accent).
+   Cold carbon vs. forge orange — that temperature duality is the signature.
+
+   RULES FOR EVERY COMPONENT:
+   - derive every value from these variables; never hardcode hex/px in a component
+   - hairlines + the mono "instrument" voice do the heavy lifting, not soft shadows
+   - one signature moment per screen; everything else stays quiet
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---- COLOR -------------------------------------------------------------- */
+  --carbon-900: #0B0D12;
+  --carbon-850: #0F1218;
+  --carbon-800: #14181F;
+  --carbon-750: #1A1F27;
+  --carbon-700: #232A33;
+  --carbon-600: #2E3742;
+
+  --line-faint: rgba(180, 192, 210, 0.06);
+  --line-soft:  rgba(180, 192, 210, 0.10);
+  --line:       rgba(180, 192, 210, 0.16);
+  --line-strong:rgba(180, 192, 210, 0.28);
+
+  --text-hi:   #E9EDF4;
+  --text:      #C2C9D4;
+  --text-mut:  #8A93A1;
+  --text-faint:#5A626E;
+
+  --signal:        #FF6B2C;
+  --signal-hot:    #FF8A4D;
+  --signal-deep:   #D8501A;
+  --signal-glow:   rgba(255, 107, 44, 0.18);
+  --signal-line:   rgba(255, 107, 44, 0.40);
+  --signal-faint:  rgba(255, 107, 44, 0.08);
+
+  --ok:   #4FB286;
+  --warn: #E0A33A;
+  --crit: #E5604D;
+  --info: #5E8BD6;
+
+  --bg:            var(--carbon-900);
+  --bg-alt:        var(--carbon-850);
+  --surface:       var(--carbon-800);
+  --surface-alt:   var(--carbon-750);
+  --elevated:      var(--carbon-700);
+  --border:        var(--line);
+  --border-strong: var(--line-strong);
+
+  /* ---- TYPE --------------------------------------------------------------- */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body:    'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+
+  --t-2xs: 0.694rem;
+  --t-xs:  0.833rem;
+  --t-sm:  0.9rem;
+  --t-base:1rem;
+  --t-md:  1.25rem;
+  --t-lg:  1.563rem;
+  --t-xl:  1.953rem;
+  --t-2xl: 2.441rem;
+  --t-3xl: 3.052rem;
+  --t-4xl: 3.815rem;
+
+  --lh-tight: 1.05;
+  --lh-snug:  1.25;
+  --lh-body:  1.6;
+
+  --track-display: -0.02em;
+  --track-label:   0.14em;
+
+  --weight-reg: 400;
+  --weight-med: 500;
+  --weight-semi:600;
+  --weight-bold:700;
+
+  /* ---- SPACE (4 / 8 rhythm) ---------------------------------------------- */
+  --s-1: 0.25rem;  --s-2: 0.5rem;  --s-3: 0.75rem;  --s-4: 1rem;
+  --s-5: 1.5rem;   --s-6: 2rem;    --s-8: 3rem;      --s-10: 4rem;
+  --s-12: 6rem;    --s-16: 8rem;   --s-20: 10rem;    --s-24: 12rem;
+
+  /* ---- RADIUS (machined edges) ------------------------------------------- */
+  --r-xs: 1px;
+  --r-sm: 2px;
+  --r-md: 3px;
+  --r-lg: 4px;
+  --r-pill: 999px;
+
+  /* ---- ELEVATION (lines first; shadow is a faint last resort) ------------- */
+  --shadow-sink: inset 0 1px 0 0 var(--line-soft);
+  --shadow-1: 0 1px 0 0 var(--line-soft);
+  --shadow-2: 0 8px 24px -12px rgba(0,0,0,0.6);
+  --glow-signal: 0 0 0 1px var(--signal-line), 0 0 24px -4px var(--signal-glow);
+
+  /* ---- MOTION (mechanical, precise — no bounce) -------------------------- */
+  --ease-mech:  cubic-bezier(0.2, 0, 0, 1);
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 240ms;
+  --dur-slow: 480ms;
+
+  /* ---- PORTFOLIO EXTENSIONS (amended by art-director) -------------------- */
+  --t-hero:    clamp(2.6rem, 7.6vw, 6rem);   /* manifesto headline */
+  --t-section: clamp(1.95rem, 4vw, 3.05rem); /* section titles */
+  --container: 1200px;
+  --grid-cell: 34px;                          /* blueprint grid pitch */
+
+  /* Scrims / overlays — carbon with alpha (never hardcode these in components) */
+  --header-bg:  rgba(11, 13, 18, 0.72);
+  --overlay-bg: rgba(11, 13, 18, 0.96);
+  --scrim:      rgba(8, 10, 14, 0.78);
+  --edge-fade:  rgba(8, 10, 14, 0.60);
+}
+
+/* =============================================================================
+   PRIMITIVES
+   ============================================================================= */
+html { background: var(--bg); color: var(--text); }
+body {
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1,h2,h3,h4 { font-family: var(--font-display); color: var(--text-hi); line-height: var(--lh-tight); letter-spacing: var(--track-display); font-weight: var(--weight-semi); }
+h1 { font-size: var(--t-4xl); } h2 { font-size: var(--t-2xl); } h3 { font-size: var(--t-xl); } h4 { font-size: var(--t-lg); }
+
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--text-mut);
+}
+.hairline { border: 0; border-top: 1px solid var(--line); }
+
+a { color: var(--signal); text-decoration: none; }
+a:hover { color: var(--signal-hot); }
+
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* =============================================================================
+   SIGNATURE UTILITIES — one per screen, sparingly
+   ============================================================================= */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--line-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-faint) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+}
+.grain::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.signal-glow { box-shadow: var(--glow-signal); }
+.signal-bar  { height: 2px; background: linear-gradient(90deg, var(--signal), transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
