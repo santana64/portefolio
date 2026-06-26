@@ -1,0 +1,299 @@
+---
+import Hero3D from './Hero3D.tsx';
+import { PROJECTS, CAT_LABEL, STACK, type Cat } from '../data/projects';
+import { iconSvg } from '../data/icons';
+import { STR, NUMBERS, SITE, ARKORYN, type Lang } from '../data/content';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = STR[lang];
+const ark = ARKORYN[lang];
+const base = import.meta.env.BASE_URL; // /portefolio/
+const homeFr = base;
+const homeEn = base + 'en';
+
+const selected = PROJECTS.filter((p) => p.selected);
+const cats = Array.from(new Set(PROJECTS.map((p) => p.cat)));
+const counts: Record<string, number> = {};
+PROJECTS.forEach((p) => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+
+const titleHtml = lang === 'fr'
+  ? 'Je conçois &amp; je <span class="sig">livre</span> des SaaS verticaux, de bout en bout.'
+  : 'I design &amp; <span class="sig">ship</span> vertical SaaS, end to end.';
+---
+<header id="site-header">
+  <div class="wrap nav">
+    <a href="#top" class="brand"><span class="led"></span>NOAH<span class="sl">// dev</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#approach"><span class="n">01</span>{t.nav_approach}</a>
+      <a href="#arkoryn"><span class="n">02</span>{t.nav_arkoryn}</a>
+      <a href="#selected"><span class="n">03</span>{t.nav_selected}</a>
+      <a href="#index"><span class="n">04</span>{t.nav_index}</a>
+      <a href="#metrics"><span class="n">05</span>{t.nav_metrics}</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang">
+        <a href={homeFr} class={lang === 'fr' ? 'active' : ''} hreflang="fr">FR</a>
+        <a href={homeEn} class={lang === 'en' ? 'active' : ''} hreflang="en">EN</a>
+      </div>
+      <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu-overlay"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="menu-overlay" id="menu-overlay" aria-label="Menu">
+  <a href="#approach"><span class="n">01</span>{t.nav_approach}</a>
+  <a href="#arkoryn"><span class="n">02</span>{t.nav_arkoryn}</a>
+  <a href="#selected"><span class="n">03</span>{t.nav_selected}</a>
+  <a href="#index"><span class="n">04</span>{t.nav_index}</a>
+  <a href="#metrics"><span class="n">05</span>{t.nav_metrics}</a>
+  <a href="#contact"><span class="n">06</span>{t.nav_contact}</a>
+</nav>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="section hero wrap" aria-label="Intro">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="led"></span>{t.hero_status}</p>
+      <h1 class="h-display" set:html={titleHtml}></h1>
+      <p class="lede">{t.hero_lede}</p>
+      <div class="readout" role="group" aria-label="Status">
+        <div class="cell"><span class="k">{t.ro_avail_k}</span><span class="v on">{t.ro_avail_v}</span></div>
+        <div class="cell"><span class="k">{t.ro_products_k}</span><span class="v">{NUMBERS.products}</span></div>
+        <div class="cell"><span class="k">{t.ro_markets_k}</span><span class="v">0{NUMBERS.verticals}</span></div>
+        <div class="cell"><span class="k">{t.ro_ts_k}</span><span class="v">{NUMBERS.ts}</span></div>
+      </div>
+      <div class="cta">
+        <a href="#selected" class="btn btn-signal">{t.hero_cta1} ▸</a>
+        <a href={SITE.calendly} target="_blank" rel="noopener" class="btn">{t.hero_cta2}</a>
+      </div>
+    </div>
+    <div class="hero-stage">
+      <div class="hero-fallback" aria-hidden="true">
+        <svg viewBox="0 0 200 200" width="78%" role="img">
+          <defs>
+            <linearGradient id="forge" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#FF6B2C" /><stop offset="0.5" stop-color="#5a2f17" /><stop offset="1" stop-color="#222a33" />
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="url(#forge)" stroke-width="1.4" stroke-linejoin="round">
+            <polygon points="100,18 168,58 168,142 100,182 32,142 32,58" />
+            <polygon points="100,18 100,100 168,58" /><polygon points="100,18 100,100 32,58" />
+            <polygon points="168,142 100,100 168,58" /><polygon points="32,142 100,100 32,58" />
+            <polygon points="100,182 100,100 168,142" /><polygon points="100,182 100,100 32,142" />
+          </g>
+        </svg>
+      </div>
+      <div class="hero-3d"><Hero3D client:visible /></div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true"><div class="ticker-row">{[...STACK, ...STACK].map((s) => <span>{s}</span>)}</div></div>
+
+  <!-- 01 APPROACH -->
+  <section class="section" id="approach">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">01 — {t.nav_approach}</p>
+        <h2 class="sec-title">{t.work_h}</h2>
+        <p class="sec-lede">{t.work_p}</p>
+      </div>
+      <div class="bento">
+        <div class="cell-b wide"><p class="ix">R-01</p><h3>{t.work_c1_h}</h3><p>{t.work_c1_p}</p></div>
+        <div class="cell-b"><p class="ix">N-00</p><p class="big">{NUMBERS.products}</p><p style="margin-top:var(--s-4)">{t.work_n1}</p></div>
+        <div class="cell-b"><p class="ix">C-02</p><h3>{t.work_c2_h}</h3><p>{t.work_c2_p}</p></div>
+        <div class="cell-b wide"><p class="ix">P-03</p><h3>{t.work_c3_h}</h3><p>{t.work_c3_p}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ARKORYN -->
+  <section class="section" id="arkoryn">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">02 — {t.nav_arkoryn}</p>
+        <h2 class="sec-title">{ark.kicker}</h2>
+      </div>
+      <div class="ark">
+        <div class="ark-grid">
+          <div class="ark-main">
+            <p class="ark-kicker"><span class="glyph" set:html={iconSvg('Arkoryn')}></span>{ark.title}</p>
+            <h2>{ark.title} — {lang === 'fr' ? 'supervision thermique' : 'thermal monitoring'}</h2>
+            <p class="ark-lede">{ark.lede}</p>
+            <div class="ark-layers">
+              {ark.layers.map((l) => <span class="ark-layer"><span class="num">{l.n}</span>{l.name}</span>)}
+            </div>
+            <p class="ark-note">{ark.note}</p>
+          </div>
+          <div class="ark-side">
+            {ark.specs.map((s) => (
+              <div class="ark-spec"><p class="k">{s.k}</p><p class="v">{s.v}</p></div>
+            ))}
+            <div class="ark-tags">{ark.tags.map((tg) => <span class="tag">{tg}</span>)}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SELECTED -->
+  <section class="section" id="selected">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">03 — {t.nav_selected}</p>
+        <h2 class="sec-title">{t.sel_h}</h2>
+        <p class="sec-lede">{t.sel_p}</p>
+      </div>
+      <div class="proof-grid">
+        {selected.map((p) => (
+          <article class="proof">
+            <span class="bar"></span>
+            <div class="head">
+              <span class="ico" set:html={iconSvg(p.name)}></span>
+              <span class="cat">{CAT_LABEL[p.cat][lang]}</span>
+            </div>
+            <h3>{p.name}</h3>
+            <dl>
+              <dt>{t.problem_k}</dt><dd>{p.proof![lang].problem}</dd>
+              <dt>{t.built_k}</dt><dd>{p.proof![lang].built}</dd>
+              <dt>{t.proof_k}</dt><dd>{p.proof![lang].proof}</dd>
+            </dl>
+            <div class="foot">
+              <div class="stack">{p.tags.slice(0, 4).map((tg) => <span class="tag">{tg}</span>)}</div>
+              {p.repo && <a class="link-mono" href={SITE.repoBase + p.repo} target="_blank" rel="noopener">{t.code_link}</a>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 INDEX -->
+  <section class="section" id="index">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">04 — {t.nav_index}</p>
+        <h2 class="sec-title">{t.idx_h}</h2>
+        <p class="sec-lede">{t.idx_p}</p>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filter">
+        <button class="chip" data-filter="all" aria-pressed="true">{lang === 'fr' ? 'Tout' : 'All'} <span class="c">{PROJECTS.length}</span></button>
+        {cats.map((c) => (
+          <button class="chip" data-filter={c} aria-pressed="false">{CAT_LABEL[c as Cat][lang]} <span class="c">{counts[c]}</span></button>
+        ))}
+      </div>
+      <div class="grid" id="grid">
+        {PROJECTS.map((p) => (
+          <article class="card" data-cat={p.cat}>
+            <span class="bar"></span>
+            <div class="top">
+              <span class="ico" set:html={iconSvg(p.name)}></span>
+              <span class="cat">{CAT_LABEL[p.cat][lang]}</span>
+            </div>
+            <h3>{p.name}</h3>
+            <p>{p.blurb[lang]}</p>
+            <div class="foot">
+              <div class="stack">{p.tags.slice(0, 3).map((tg) => <span class="tag">{tg}</span>)}</div>
+              {p.repo && <a class="link-mono" href={SITE.repoBase + p.repo} target="_blank" rel="noopener">{t.open_repo}</a>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 METRICS -->
+  <section class="section" id="metrics">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">05 — {t.nav_metrics}</p>
+        <h2 class="sec-title">{t.metrics_h}</h2>
+      </div>
+      <div class="metrics">
+        <div class="metric"><p class="v">{NUMBERS.products}</p><div class="uline"></div><p class="k">{t.stat_products}</p></div>
+        <div class="metric"><p class="v">0{NUMBERS.verticals}</p><div class="uline"></div><p class="k">{t.stat_verticals}</p></div>
+        <div class="metric"><p class="v">{NUMBERS.commits}</p><div class="uline"></div><p class="k">{t.stat_commits}</p></div>
+        <div class="metric"><p class="v">100<span class="u">%</span></p><div class="uline"></div><p class="k">{t.stat_ts}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 SOCIAL PROOF -->
+  <section class="section" id="proof">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-num">06 — {t.social_h}</p>
+      </div>
+      <div class="proof-stats">
+        <div class="proof-note">
+          <p class="q">{t.social_q}</p>
+          <p class="m">{t.social_m}</p>
+        </div>
+        <div class="proof-badges">
+          <p class="row"><b>{NUMBERS.products}</b> {t.social_b1}</p>
+          <p class="row"><b>0{NUMBERS.verticals}</b> {t.social_b2}</p>
+          <p class="row"><b>100%</b> {t.social_b3}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact-panel">
+        <h2>{t.contact_h}</h2>
+        <p>{t.contact_p}</p>
+        <p class="contact-meta">{t.contact_meta}</p>
+        <div class="cta">
+          <a href={SITE.calendly} target="_blank" rel="noopener" class="btn btn-signal">{t.contact_cta1} ▸</a>
+          <a href={`mailto:${SITE.email}`} class="btn">{t.contact_cta2}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>© {new Date().getFullYear()} Noah — {t.foot_tag}</div>
+    <div><a href={`mailto:${SITE.email}`}>{SITE.email}</a></div>
+  </div>
+</footer>
+
+<script>
+  // header state + progress
+  const header = document.getElementById('site-header');
+  const progress = document.querySelector('.progress') as HTMLElement | null;
+  function onScroll() {
+    const st = window.scrollY || document.documentElement.scrollTop;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (h > 0 ? (st / h) * 100 : 0) + '%';
+    header?.classList.toggle('scrolled', st > 20);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // mobile menu
+  const btn = document.getElementById('menu-btn');
+  const overlay = document.getElementById('menu-overlay');
+  function setMenu(open: boolean) {
+    overlay?.classList.toggle('open', open);
+    btn?.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  btn?.addEventListener('click', () => setMenu(!overlay?.classList.contains('open')));
+  overlay?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+  // filters
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('#filters .chip'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#grid .card'));
+  chips.forEach((chip) => chip.addEventListener('click', () => {
+    chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+    chip.setAttribute('aria-pressed', 'true');
+    const f = chip.dataset.filter;
+    cards.forEach((card) => { card.style.display = (f === 'all' || card.dataset.cat === f) ? 'flex' : 'none'; });
+  }));
+</script>

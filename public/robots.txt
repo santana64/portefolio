@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://santana64.github.io/portefolio/sitemap-index.xml
